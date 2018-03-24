@@ -21,10 +21,7 @@ class KeyTest {
                 "1",
                 "~",
                 "\\",
-                "╚",
-                "ú",
-                "≥",
-                "█"
+                "\u00EA"
         )));
 
         assertNotNull(Key.toKeys(Arrays.asList(
@@ -63,10 +60,10 @@ class KeyTest {
         assertNotEquals(KeyMap.getKey("enter"), new Key(KeyEvent.VK_SPACE, true));
 
         assertEquals(KeyMap.getKey("{"), new Key((int) '{', false));
-        assertEquals(KeyMap.getKey("█"), new Key((int) '█', false));
+        assertEquals(KeyMap.getKey("\u00EA"), new Key((int) '\u00EA', false));
 
-        assertNotEquals(KeyMap.getKey("█"), new Key((int) '{', false));
-        assertNotEquals(KeyMap.getKey("{"), new Key((int) '█', false));
+        assertNotEquals(KeyMap.getKey("\u00EA"), new Key((int) '{', false));
+        assertNotEquals(KeyMap.getKey("{"), new Key((int) '\u00EA', false));
     }
 
 }

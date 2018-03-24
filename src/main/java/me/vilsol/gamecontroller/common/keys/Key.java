@@ -1,7 +1,5 @@
 package me.vilsol.gamecontroller.common.keys;
 
-import com.sun.istack.internal.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -49,7 +47,6 @@ public class Key {
         return Objects.hash(code, special);
     }
 
-    @Nullable
     public static List<Key> toKeys(List<String> keys){
         List<Key> validKeys = new ArrayList<>();
 

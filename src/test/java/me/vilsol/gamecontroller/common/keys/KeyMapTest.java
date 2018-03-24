@@ -21,24 +21,24 @@ class KeyMapTest {
         assertNotEquals(KeyMap.getKey("enter"), new Key(KeyEvent.VK_SPACE, true));
 
         assertEquals(KeyMap.getKey("{"), new Key((int) '{', false));
-        assertEquals(KeyMap.getKey("█"), new Key((int) '█', false));
+        assertEquals(KeyMap.getKey("\u00EA"), new Key((int) '\u00EA', false));
 
-        assertNotEquals(KeyMap.getKey("█"), new Key((int) '{', false));
-        assertNotEquals(KeyMap.getKey("{"), new Key((int) '█', false));
+        assertNotEquals(KeyMap.getKey("\u00EA"), new Key((int) '{', false));
+        assertNotEquals(KeyMap.getKey("{"), new Key((int) '\u00EA', false));
     }
 
     @Test
     void getName(){
-        assertEquals(KeyMap.getName(KeyMap.getKey("enter")), "enter");
-        assertEquals(KeyMap.getName(KeyMap.getKey("space")), "space");
-        assertEquals(KeyMap.getName(KeyMap.getKey("escape")), "escape");
+        assertEquals("enter", KeyMap.getName(KeyMap.getKey("enter")));
+        assertEquals("space", KeyMap.getName(KeyMap.getKey("space")));
+        assertEquals("escape", KeyMap.getName(KeyMap.getKey("escape")));
 
         assertNull(KeyMap.getName(null));
         assertNull(KeyMap.getName(new Key(123456, true)));
 
-        assertEquals(KeyMap.getName(KeyMap.getKey("a")), "a");
-        assertEquals(KeyMap.getName(KeyMap.getKey("{")), "{");
-        assertEquals(KeyMap.getName(KeyMap.getKey("█")), "█");
+        assertEquals("a", KeyMap.getName(KeyMap.getKey("a")));
+        assertEquals("{", KeyMap.getName(KeyMap.getKey("{")));
+        assertEquals("\u00EA", KeyMap.getName(KeyMap.getKey("\u00EA")));
     }
 
 }

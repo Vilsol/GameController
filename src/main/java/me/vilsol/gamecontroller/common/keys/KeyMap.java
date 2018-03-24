@@ -1,7 +1,5 @@
 package me.vilsol.gamecontroller.common.keys;
 
-import com.sun.istack.internal.Nullable;
-
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,7 +65,6 @@ public class KeyMap {
         SPECIAL_KEYS_REVERSE.put(code << 16, key);
     }
 
-    @Nullable
     public static Key getKey(String key){
         if(SPECIAL_KEYS.containsKey(key.toLowerCase())){
             return new Key(SPECIAL_KEYS.get(key.toLowerCase()), true);
@@ -80,8 +77,7 @@ public class KeyMap {
         return new Key((int) key.charAt(0), false);
     }
 
-    @Nullable
-    public static String getName(@Nullable Key key){
+    public static String getName(Key key){
         if(key == null){
             return null;
         }
