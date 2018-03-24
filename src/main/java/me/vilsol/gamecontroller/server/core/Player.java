@@ -44,11 +44,11 @@ public class Player {
     }
 
     public void onKey(int key, Consumer<KeyAction> callback){
-        keyCallbacks.put(new Key(key << 16, true), new CallbackData<>(callback, null, KeyAction.class, null));
+        keyCallbacks.put(new Key(key, true), new CallbackData<>(callback, null, KeyAction.class, null));
     }
 
     public <T> void onKey(int key, Class<T> type, DoubleConsumer<KeyAction, T> callback){
-        keyCallbacks.put(new Key(key << 16, true), new CallbackData<>(null, callback, KeyAction.class, type));
+        keyCallbacks.put(new Key(key, true), new CallbackData<>(null, callback, KeyAction.class, type));
     }
 
     public <T> void executeKey(Key key, KeyAction action, T payload){

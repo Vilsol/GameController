@@ -4,18 +4,19 @@ import me.vilsol.gamecontroller.common.keys.KeyAction;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class KeyboardMessage extends Message {
 
-    private List<Action> actions;
     private String player;
+    private List<Action> actions;
 
     public KeyboardMessage(){
     }
 
-    public KeyboardMessage(List<Action> actions, String player){
-        this.actions = actions;
+    public KeyboardMessage(String player, List<Action> actions){
         this.player = player;
+        this.actions = actions;
     }
 
     public List<Action> getActions(){
@@ -36,7 +37,37 @@ public class KeyboardMessage extends Message {
 
     @Override
     protected boolean validateStructure(){
-        return actions != null || player != null;
+        if(actions == null || player == null){
+            return false;
+        }
+
+        for(Action action : actions){
+            if(!action.validateStructure()){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(this == o){
+            return true;
+        }
+
+        if(o == null || getClass() != o.getClass()){
+            return false;
+        }
+
+        KeyboardMessage that = (KeyboardMessage) o;
+        return Objects.equals(actions, that.actions) &&
+                Objects.equals(player, that.player);
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(actions, player);
     }
 
     public static class Action {
@@ -84,6 +115,30 @@ public class KeyboardMessage extends Message {
             this.payload = payload;
         }
 
+        @Override
+        public boolean equals(Object o){
+            if(this == o){
+                return true;
+            }
+
+            if(o == null || getClass() != o.getClass()){
+                return false;
+            }
+
+            Action action1 = (Action) o;
+            return action == action1.action &&
+                    Objects.equals(keys, action1.keys) &&
+                    Objects.equals(payload, action1.payload);
+        }
+
+        @Override
+        public int hashCode(){
+            return Objects.hash(action, keys, payload);
+        }
+
+        public boolean validateStructure(){
+            return action != null && keys != null;
+        }
     }
 
 }

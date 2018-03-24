@@ -18,12 +18,14 @@ public class CallbackData<A, B> {
     }
 
     public void execute(A a, B b){
-        if(singleConsumer != null){
-            singleConsumer.accept(a);
+        if(doubleConsumer != null){
+            doubleConsumer.accept(a, b);
             return;
         }
 
-        doubleConsumer.accept(a, b);
+        if(singleConsumer != null){
+            singleConsumer.accept(a);
+        }
     }
 
     public Class<A> getAType(){

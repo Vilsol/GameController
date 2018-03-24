@@ -5,6 +5,14 @@ import me.vilsol.gamecontroller.common.GsonUtils;
 public abstract class Message {
 
     public static <T extends Message> T decode(Class<T> clazz, String message){
+        if(clazz == null || clazz == Message.class){
+            return null;
+        }
+
+        if(message == null){
+            return null;
+        }
+
         T decoded;
 
         try{

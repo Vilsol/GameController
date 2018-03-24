@@ -14,6 +14,10 @@ public class Key {
     public Key(int code, boolean special){
         this.code = code;
         this.special = special;
+
+        if(this.special){
+            this.code = this.code << 16;
+        }
     }
 
     public int getCode(){

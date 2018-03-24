@@ -10,6 +10,7 @@ import org.java_websocket.client.WebSocketClient;
 
 import java.lang.reflect.Type;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,27 +27,14 @@ public class Player {
     public Player(String name, String endpoint){
         this.name = name;
         this.endpoint = endpoint;
-        reconnect();
-    }
 
-    private void reconnect(){
         try{
-            webSocketClient = new WebsocketHandler(this, new URI(endpoint));
-
-            webSocketClient.connect();
-
-            for(int i = 0; i < 10; i++){
-                if(!webSocketClient.isOpen()){
-                    Thread.sleep(500);
-                }else{
-                    return;
-                }
-            }
-
-            throw new RuntimeException("Failed to connect to the websocket!");
-        }catch(Exception e){
+            this.webSocketClient = new WebsocketHandler(this, new URI(endpoint));
+        }catch(URISyntaxException e){
             throw new RuntimeException(e);
         }
+
+        this.webSocketClient.reconnect();
     }
 
     public void pressKeys(String... keys){
@@ -74,7 +62,7 @@ public class Player {
     }
 
     public void executeKeyAction(KeyAction action, Object payload, String... keys){
-        KeyboardMessage message = new KeyboardMessage(new ArrayList<>(), name);
+        KeyboardMessage message = new KeyboardMessage(name, new ArrayList<>());
         String payloadString = null;
 
         if(payload != null){

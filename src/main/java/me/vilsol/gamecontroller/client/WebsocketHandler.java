@@ -14,8 +14,8 @@ public class WebsocketHandler extends WebSocketClient {
 
     public WebsocketHandler(Player player, URI serverUri){
         super(serverUri);
-
         this.player = player;
+        reconnect();
     }
 
     @Override

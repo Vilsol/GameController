@@ -63,7 +63,7 @@ public class KeyMap {
     }
 
     private static void addKey(String key, Integer code){
-        SPECIAL_KEYS.put(key, code << 16);
+        SPECIAL_KEYS.put(key, code);
         SPECIAL_KEYS_REVERSE.put(code << 16, key);
     }
 
@@ -81,9 +81,7 @@ public class KeyMap {
     }
 
     @Nullable
-    public static String getName(
-            @Nullable
-                    Key key){
+    public static String getName(@Nullable Key key){
         if(key == null){
             return null;
         }
