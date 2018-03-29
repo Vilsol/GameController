@@ -1,5 +1,6 @@
 matrix:
   include:
+    # Java 8
     - language: java
 
       jdk: oraclejdk8
@@ -14,10 +15,29 @@ matrix:
           - $HOME/.gradle/wrapper/
 
       before_install:
+        - cd java
         - chmod +x gradlew
 
-      before_script:
+      script:
+        - ./gradlew clean check
+
+    # Java 9
+    - language: java
+
+      jdk: oraclejdk9
+
+      before_cache:
+        - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+        - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+      cache:
+        directories:
+          - $HOME/.gradle/caches/
+          - $HOME/.gradle/wrapper/
+
+      before_install:
         - cd java
+        - chmod +x gradlew
 
       script:
         - ./gradlew clean check
