@@ -3,9 +3,9 @@ package me.vilsol.gamecontroller.client;
 import me.vilsol.gamecontroller.common.CallbackData;
 import me.vilsol.gamecontroller.common.GsonUtils;
 import me.vilsol.gamecontroller.common.keys.KeyAction;
-import me.vilsol.gamecontroller.common.messages.KeyboardMessage;
-import me.vilsol.gamecontroller.common.messages.MessageType;
-import me.vilsol.gamecontroller.common.messages.PayloadMessage;
+import me.vilsol.gamecontroller.common.messages.*;
+import me.vilsol.gamecontroller.common.mouse.MouseAction;
+import me.vilsol.gamecontroller.common.mouse.MousePositionType;
 import org.java_websocket.client.WebSocketClient;
 
 import java.lang.reflect.Type;
@@ -19,6 +19,7 @@ import java.util.function.Consumer;
 public class Player {
 
     private final Map<String, CallbackData<?, ?>> payloadCallbacks = new HashMap<>();
+    private final Map<String, CallbackData<?, ?>> eventCallbacks = new HashMap<>();
 
     private String name;
     private String endpoint;
@@ -34,7 +35,7 @@ public class Player {
             throw new RuntimeException(e);
         }
 
-        this.webSocketClient.reconnect();
+        this.webSocketClient.connect();
     }
 
     public void pressKeys(String... keys){
@@ -76,6 +77,27 @@ public class Player {
         webSocketClient.send(MessageType.KEYBOARD.ordinal() + GsonUtils.GSON.toJson(message));
     }
 
+    public <T> void pressMouse(MousePositionType positionType, int x, int y, T payload){
+        executeMouseAction(MouseAction.PRESSED, positionType, x, y, payload);
+    }
+
+    public <T> void releaseMouse(MousePositionType positionType, int x, int y, T payload){
+        executeMouseAction(MouseAction.RELEASED, positionType, x, y, payload);
+    }
+
+    public <T> void clickMouse(MousePositionType positionType, int x, int y, T payload){
+        executeMouseAction(MouseAction.CLICKED, positionType, x, y, payload);
+    }
+
+    public <T> void moveMouse(MousePositionType positionType, int x, int y, T payload){
+        executeMouseAction(MouseAction.MOVED, positionType, x, y, payload);
+    }
+
+    public <T> void executeMouseAction(MouseAction action, MousePositionType positionType, int x, int y, T payload){
+        MouseMessage mouseMessage = new MouseMessage(name, action, new MouseMessage.Position(positionType, x, y), GsonUtils.GSON.toJson(payload));
+        webSocketClient.send(MessageType.MOUSE.ordinal() + GsonUtils.GSON.toJson(mouseMessage));
+    }
+
     public <T> void onPayload(String payloadType, Class<T> payloadClass, Consumer<T> callback){
         payloadCallbacks.put(payloadType, new CallbackData(callback, null, payloadClass, null));
     }
@@ -87,6 +109,11 @@ public class Player {
             return;
         }
 
+        if(callback.getAType() == null){
+            callback.execute(null, null);
+            return;
+        }
+
         T payload = GsonUtils.GSON.fromJson(message.getPayload(), (Type) callback.getAType());
         ((CallbackData<T, ?>) callback).execute(payload, null);
     }
@@ -94,6 +121,31 @@ public class Player {
     public <T> void sendPayload(String type, T payload){
         PayloadMessage payloadMessage = new PayloadMessage(name, GsonUtils.GSON.toJson(payload), type);
         webSocketClient.send(MessageType.PAYLOAD.ordinal() + GsonUtils.GSON.toJson(payloadMessage));
+    }
+
+    public <T> void onEvent(String event, Class<T> payloadClass, Consumer<T> callback){
+        eventCallbacks.put(event, new CallbackData(callback, null, payloadClass, null));
+    }
+
+    protected <T> void processEvent(EventMessage message){
+        CallbackData<?, ?> callback = eventCallbacks.get(message.getEvent());
+
+        if(callback == null){
+            return;
+        }
+
+        if(callback.getAType() == null){
+            callback.execute(null, null);
+            return;
+        }
+
+        T payload = GsonUtils.GSON.fromJson(message.getPayload(), (Type) callback.getAType());
+        ((CallbackData<T, ?>) callback).execute(payload, null);
+    }
+
+    public <T> void sendEvent(String event, T payload){
+        EventMessage eventMessage = new EventMessage(name, event, GsonUtils.GSON.toJson(payload));
+        webSocketClient.send(MessageType.EVENT.ordinal() + GsonUtils.GSON.toJson(eventMessage));
     }
 
 }

@@ -1,8 +1,6 @@
 package me.vilsol.gamecontroller.server;
 
-import me.vilsol.gamecontroller.common.messages.KeyboardMessage;
-import me.vilsol.gamecontroller.common.messages.Message;
-import me.vilsol.gamecontroller.common.messages.PayloadMessage;
+import me.vilsol.gamecontroller.common.messages.*;
 import me.vilsol.gamecontroller.server.core.MessageProcessor;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
@@ -17,8 +15,12 @@ public class WebsocketHandler {
 
         if(message instanceof KeyboardMessage){
             MessageProcessor.processKeyboardMessage(session, (KeyboardMessage) message);
+        }else if(message instanceof MouseMessage){
+            MessageProcessor.processMouseMessage(session, (MouseMessage) message);
         }else if(message instanceof PayloadMessage){
             MessageProcessor.processPayloadMessage(session, (PayloadMessage) message);
+        }else if(message instanceof EventMessage){
+            MessageProcessor.processEventMessage(session, (EventMessage) message);
         }
 
     }

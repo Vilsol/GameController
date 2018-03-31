@@ -1,5 +1,6 @@
 package me.vilsol.gamecontroller.client;
 
+import me.vilsol.gamecontroller.common.messages.EventMessage;
 import me.vilsol.gamecontroller.common.messages.Message;
 import me.vilsol.gamecontroller.common.messages.PayloadMessage;
 import org.java_websocket.client.WebSocketClient;
@@ -14,7 +15,6 @@ public class WebsocketHandler extends WebSocketClient {
     public WebsocketHandler(Player player, URI serverUri){
         super(serverUri);
         this.player = player;
-        reconnect();
     }
 
     @Override
@@ -27,6 +27,8 @@ public class WebsocketHandler extends WebSocketClient {
 
         if(message instanceof PayloadMessage){
             player.processPayload((PayloadMessage) message);
+        }else if(message instanceof EventMessage){
+            player.processEvent((EventMessage) message);
         }
     }
 

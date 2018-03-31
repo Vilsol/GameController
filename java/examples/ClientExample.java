@@ -1,4 +1,5 @@
 import me.vilsol.gamecontroller.client.Player;
+import me.vilsol.gamecontroller.common.mouse.MousePositionType;
 
 public class ClientExample {
 
@@ -9,6 +10,12 @@ public class ClientExample {
             System.out.println("Received Ping: " + pingMessage.ping);
 
             playerOne.sendPayload("pong", new PongMessage("PONG!"));
+        });
+
+        playerOne.onEvent("frame", null, (payload) -> {
+            System.out.println("New Frame!");
+
+            playerOne.moveMouse(MousePositionType.RELATIVE, 123, 456, null);
         });
 
         playerOne.clickKeys(new SampleData("Hello World!"), "enter", "a", "A");

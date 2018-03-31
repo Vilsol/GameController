@@ -5,7 +5,9 @@ import me.vilsol.gamecontroller.common.DoubleConsumer;
 import me.vilsol.gamecontroller.common.GsonUtils;
 import me.vilsol.gamecontroller.common.keys.Key;
 import me.vilsol.gamecontroller.common.keys.KeyAction;
+import me.vilsol.gamecontroller.common.messages.EventMessage;
 import me.vilsol.gamecontroller.common.messages.MessageType;
+import me.vilsol.gamecontroller.common.messages.MouseMessage;
 import me.vilsol.gamecontroller.common.messages.PayloadMessage;
 import org.eclipse.jetty.websocket.api.Session;
 
@@ -18,6 +20,8 @@ public class Player {
 
     private final Map<Key, CallbackData<KeyAction, ?>> keyCallbacks = new HashMap<>();
     private final Map<String, CallbackData<?, ?>> payloadCallbacks = new HashMap<>();
+    private final Map<String, CallbackData<?, ?>> eventCallbacks = new HashMap<>();
+    private CallbackData<MouseMessage, ?> mouseCallback;
 
     private String name;
 
@@ -68,6 +72,14 @@ public class Player {
         }
     }
 
+    public CallbackData<MouseMessage, ?> getMouseCallback(){
+        return mouseCallback;
+    }
+
+    public <T> void onMouse(Class<T> payloadClass, DoubleConsumer<MouseMessage, T> callback){
+        this.mouseCallback = new CallbackData<>(null, callback, MouseMessage.class, payloadClass);
+    }
+
     public Class<?> getPayloadType(Key key){
         if(keyCallbacks.containsKey(key)){
             return keyCallbacks.get(key).getBType();
@@ -96,6 +108,28 @@ public class Player {
 
     public CallbackData<?, ?> getPayloadCallback(String payloadType){
         return payloadCallbacks.get(payloadType);
+    }
+
+    public <T> void onEvent(String eventType, Class<T> payloadClass, Consumer<T> callback){
+        eventCallbacks.put(eventType, new CallbackData(callback, null, payloadClass, null));
+    }
+
+    public <T> void sendEvent(String event, T payload){
+        if(session == null || !session.isOpen()){
+            return;
+        }
+
+        EventMessage eventMessage = new EventMessage(name, event, GsonUtils.GSON.toJson(payload));
+
+        try{
+            session.getRemote().sendString(MessageType.EVENT.ordinal() + GsonUtils.GSON.toJson(eventMessage));
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public CallbackData<?, ?> getEventCallback(String event){
+        return eventCallbacks.get(event);
     }
 
 }

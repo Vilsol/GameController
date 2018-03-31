@@ -1,3 +1,4 @@
+import me.vilsol.gamecontroller.common.messages.MouseMessage;
 import me.vilsol.gamecontroller.server.Server;
 import me.vilsol.gamecontroller.server.core.Player;
 import me.vilsol.gamecontroller.server.core.PlayerManager;
@@ -20,7 +21,14 @@ public class ServerExample {
 
         playerOne.onPayload("pong", PongMessage.class, pongMessage -> {
             System.out.println("Received Pong: " + pongMessage.pong);
+
+            playerOne.sendEvent("frame", null);
         });
+
+        playerOne.onMouse(null, ((message, payload) -> {
+            MouseMessage.Position position = message.getPosition();
+            System.out.println("Mouse was " + message.getAction() + " to/at " + position.getType() + " " + position.getX() + "," + position.getY());
+        }));
 
         Server.start(8080);
     }
