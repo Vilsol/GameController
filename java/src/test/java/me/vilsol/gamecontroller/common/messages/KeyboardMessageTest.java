@@ -65,16 +65,17 @@ class KeyboardMessageTest {
 
     @Test
     void decode(){
-        assertNull(Message.decode(KeyboardMessage.class, "{}"));
-        assertNull(Message.decode(KeyboardMessage.class, "{\"player\":\"Someone\"}"));
-        assertNull(Message.decode(KeyboardMessage.class, "{\"player\":\"Someone\",\"actions\":[{}]}"));
-        assertNull(Message.decode(KeyboardMessage.class, "{\"player\":\"Someone\",\"actions\":[{\"action\":\"PRESSED\"}\"}]}"));
-        assertNotNull(Message.decode(KeyboardMessage.class, "{\"player\":\"Someone\",\"actions\":[{\"action\":\"PRESSED\",\"keys\":[\"enter\"]}]}"));
-        assertNotNull(Message.decode(KeyboardMessage.class, "{\"player\":\"Someone\",\"actions\":[{\"action\":\"PRESSED\",\"keys\":[\"enter\"],\"payload\":\"{\\\"something\\\": \\\"darkside\\\"}\"}]}"));
+        assertNull(Message.decode("0"));
+        assertNull(Message.decode("0{}"));
+        assertNull(Message.decode("0{\"player\":\"Someone\"}"));
+        assertNull(Message.decode("0{\"player\":\"Someone\",\"actions\":[{}]}"));
+        assertNull(Message.decode("0{\"player\":\"Someone\",\"actions\":[{\"action\":\"PRESSED\"}\"}]}"));
+        assertNotNull(Message.decode("0{\"player\":\"Someone\",\"actions\":[{\"action\":\"PRESSED\",\"keys\":[\"enter\"]}]}"));
+        assertNotNull(Message.decode("0{\"player\":\"Someone\",\"actions\":[{\"action\":\"PRESSED\",\"keys\":[\"enter\"],\"payload\":\"{\\\"something\\\": \\\"darkside\\\"}\"}]}"));
 
         KeyboardMessage.Action action = new KeyboardMessage.Action(KeyAction.PRESSED, Collections.singletonList("enter"), "{\"something\": \"darkside\"}");
         KeyboardMessage message = new KeyboardMessage("Someone", Collections.singletonList(action));
-        KeyboardMessage decoded = Message.decode(KeyboardMessage.class, "{\"player\":\"Someone\",\"actions\":[{\"action\":\"PRESSED\",\"keys\":[\"enter\"],\"payload\":\"{\\\"something\\\": \\\"darkside\\\"}\"}]}");
+        KeyboardMessage decoded = Message.decode("0{\"player\":\"Someone\",\"actions\":[{\"action\":\"PRESSED\",\"keys\":[\"enter\"],\"payload\":\"{\\\"something\\\": \\\"darkside\\\"}\"}]}");
         assertEquals(message, decoded);
     }
 

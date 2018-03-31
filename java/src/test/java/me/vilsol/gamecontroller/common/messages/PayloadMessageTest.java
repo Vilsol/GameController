@@ -51,12 +51,13 @@ class PayloadMessageTest {
 
     @Test
     void decode(){
-        assertNull(Message.decode(PayloadMessage.class, "{}"));
-        assertNull(Message.decode(PayloadMessage.class, "{\"player\":\"Someone\"}"));
-        assertNull(Message.decode(PayloadMessage.class, "{\"player\":\"Someone\",\"payload\":\"Hello World\"}"));
+        assertNull(Message.decode("2"));
+        assertNull(Message.decode("2{}"));
+        assertNull(Message.decode("2{\"player\":\"Someone\"}"));
+        assertNull(Message.decode("2{\"player\":\"Someone\",\"payload\":\"Hello World\"}"));
 
         PayloadMessage message = new PayloadMessage("Someone", "Hello World", "test");
-        PayloadMessage decoded = Message.decode(PayloadMessage.class, "{\"player\":\"Someone\",\"payload\":\"Hello World\",\"payloadType\":\"test\"}");
+        PayloadMessage decoded = Message.decode("2{\"player\":\"Someone\",\"payload\":\"Hello World\",\"payloadType\":\"test\"}");
         assertEquals(message, decoded);
     }
 

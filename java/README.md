@@ -68,5 +68,5 @@ Extended example [here](/java/examples/ClientExample.java)
 
 ## TODO
 
-* Add mouse support
-* Add event support
+* Comments
+* More unit tests

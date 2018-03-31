@@ -60,12 +60,12 @@ There are multiple special keys. The server will convert any special keys to low
 
 ```json
 {
-    "player": "string",  # Player name
-    "action": "string",  # One of PRESSED, RELEASED, CLICKED or MOVED
-    "position": {        # Position of the action (can be omitted)
-        "type": "string" # One of ABSOLUTE or REALTIVE
-        "x": "integer"   # X Coordinate (widthwise)
-        "y": "integer"   # Y Coordinate (heightwise)
+    "player": "string",   # Player name
+    "action": "string",   # One of PRESSED, RELEASED, CLICKED or MOVED
+    "position": {         # Position of the action (can be omitted)
+        "type": "string", # One of ABSOLUTE or REALTIVE
+        "x": "integer",   # X Coordinate (widthwise)
+        "y": "integer",   # Y Coordinate (heightwise)
     }
     "payload": "string"  # Serialized JSON payload (can be omitted)
 }

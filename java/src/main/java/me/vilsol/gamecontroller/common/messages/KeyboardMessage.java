@@ -115,6 +115,10 @@ public class KeyboardMessage extends Message {
             this.payload = payload;
         }
 
+        public boolean validateStructure(){
+            return action != null && keys != null;
+        }
+
         @Override
         public boolean equals(Object o){
             if(this == o){
@@ -136,9 +140,6 @@ public class KeyboardMessage extends Message {
             return Objects.hash(action, keys, payload);
         }
 
-        public boolean validateStructure(){
-            return action != null && keys != null;
-        }
     }
 
 }

@@ -1,7 +1,6 @@
 package me.vilsol.gamecontroller.client;
 
 import me.vilsol.gamecontroller.common.messages.Message;
-import me.vilsol.gamecontroller.common.messages.MessageType;
 import me.vilsol.gamecontroller.common.messages.PayloadMessage;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -23,31 +22,11 @@ public class WebsocketHandler extends WebSocketClient {
     }
 
     @Override
-    public void onMessage(String message){
-        int jsonStart = message.indexOf("{");
+    public void onMessage(String data){
+        Message message = Message.decode(data);
 
-        if(jsonStart < 0){
-            return;
-        }
-
-        MessageType type;
-
-        try{
-            type = MessageType.values()[Integer.parseInt(message.substring(0, jsonStart))];
-        }catch(Exception ignored){
-            return;
-        }
-
-        switch(type){
-            case PAYLOAD:
-                PayloadMessage payloadMessage = Message.decode(PayloadMessage.class, message.substring(jsonStart));
-
-                if(payloadMessage == null){
-                    return;
-                }
-
-                player.processPayload(payloadMessage);
-                break;
+        if(message instanceof PayloadMessage){
+            player.processPayload((PayloadMessage) message);
         }
     }
 

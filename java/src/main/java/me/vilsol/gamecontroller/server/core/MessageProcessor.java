@@ -31,7 +31,7 @@ public class MessageProcessor {
                 return;
             }
 
-            validKeys.forEach(key -> player.executeKey(key, action.getAction(), Utils.getPayload(player, action, key)));
+            validKeys.forEach(key -> player.executeKey(key, action.getAction(), GsonUtils.getPayload(player, action, key)));
         });
     }
 
