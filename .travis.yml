@@ -41,3 +41,11 @@ matrix:
 
       script:
         - ./gradlew clean check
+
+    - language: csharp
+
+      solution: CSharp.sln
+
+      before_install:
+        - cd csharp
+
