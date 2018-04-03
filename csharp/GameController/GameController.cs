@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace CSharp
+namespace GameController
 {
-    /// <summary>
-    /// Lib class for converting game data to Json for sending to server.
-    /// Requires Newtonsoft.Json package.
-    /// Possible future additions: Make ability to initialize pre-made messages for developers to initialize all valid messages for game from beginning.
-    /// </summary>
     public class GameController
     {
         private KeyboardMessage m_KeyboardMessage;
@@ -487,6 +479,5 @@ namespace CSharp
             };
         }
     }
-
 
 }

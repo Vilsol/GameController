@@ -44,16 +44,7 @@ matrix:
 
     - language: csharp
 
-      solution: CSharp.sln
-
-      mono: none
-      dotnet: 1.1.5
+      solution: GameController.sln
 
       before_install:
         - cd csharp
-
-      script:
-        - dotnet restore
-        - nuget restore CSharp.sln
-        - msbuild /p:Configuration=Release CSharp.sln
-

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameController", "GameController\GameController.csproj", "{9BB1510A-B60E-4220-BC12-1631E1F569FB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9BB1510A-B60E-4220-BC12-1631E1F569FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BB1510A-B60E-4220-BC12-1631E1F569FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BB1510A-B60E-4220-BC12-1631E1F569FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BB1510A-B60E-4220-BC12-1631E1F569FB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {80D86FB3-D24F-41F9-BAEC-649F765A332C}
+	EndGlobalSection
+EndGlobal
