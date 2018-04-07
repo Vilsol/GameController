@@ -1,8 +1,6 @@
 package me.vilsol.gamecontroller.client;
 
-import me.vilsol.gamecontroller.common.messages.EventMessage;
 import me.vilsol.gamecontroller.common.messages.Message;
-import me.vilsol.gamecontroller.common.messages.PayloadMessage;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -10,9 +8,9 @@ import java.net.URI;
 
 public class WebsocketHandler extends WebSocketClient {
 
-    private Player player;
+    private ClientPlayer player;
 
-    public WebsocketHandler(Player player, URI serverUri){
+    public WebsocketHandler(ClientPlayer player, URI serverUri){
         super(serverUri);
         this.player = player;
     }
@@ -25,11 +23,11 @@ public class WebsocketHandler extends WebSocketClient {
     public void onMessage(String data){
         Message message = Message.decode(data);
 
-        if(message instanceof PayloadMessage){
-            player.processPayload((PayloadMessage) message);
-        }else if(message instanceof EventMessage){
-            player.processEvent((EventMessage) message);
+        if(message == null){
+            return;
         }
+
+        message.process();
     }
 
     @Override

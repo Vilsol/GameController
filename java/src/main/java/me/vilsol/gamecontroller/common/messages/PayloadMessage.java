@@ -1,10 +1,12 @@
 package me.vilsol.gamecontroller.common.messages;
 
+import me.vilsol.gamecontroller.common.BasePlayer;
+import me.vilsol.gamecontroller.common.GameController;
+
 import java.util.Objects;
 
-public class PayloadMessage extends Message {
+public class PayloadMessage extends PlayerMessage {
 
-    private String player;
     private String payload;
     private String payloadType;
 
@@ -12,17 +14,9 @@ public class PayloadMessage extends Message {
     }
 
     public PayloadMessage(String player, String payload, String payloadType){
-        this.player = player;
+        super(player);
         this.payload = payload;
         this.payloadType = payloadType;
-    }
-
-    public String getPlayer(){
-        return player;
-    }
-
-    public void setPlayer(String player){
-        this.player = player;
     }
 
     public String getPayload(){
@@ -43,7 +37,18 @@ public class PayloadMessage extends Message {
 
     @Override
     protected boolean validateStructure(){
-        return player != null && payload != null && payloadType != null;
+        return super.validateStructure() && payload != null && payloadType != null;
+    }
+
+    @Override
+    public void process(){
+        BasePlayer player = GameController.resolvePlayer(getPlayer());
+
+        if(player == null){
+            return;
+        }
+
+        player.processPayload(this);
     }
 
     @Override
@@ -56,15 +61,18 @@ public class PayloadMessage extends Message {
             return false;
         }
 
+        if(!super.equals(o)){
+            return false;
+        }
+
         PayloadMessage that = (PayloadMessage) o;
-        return Objects.equals(player, that.player) &&
-                Objects.equals(payload, that.payload) &&
+        return Objects.equals(payload, that.payload) &&
                 Objects.equals(payloadType, that.payloadType);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(player, payload, payloadType);
+        return Objects.hash(super.hashCode(), payload, payloadType);
     }
 
 }

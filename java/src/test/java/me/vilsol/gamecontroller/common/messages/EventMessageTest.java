@@ -43,7 +43,7 @@ class EventMessageTest {
     @Test
     void encode(){
         EventMessage message = new EventMessage("Someone", "test", "Hello World");
-        assertEquals("{\"player\":\"Someone\",\"event\":\"test\",\"payload\":\"Hello World\"}", GsonUtils.GSON.toJson(message));
+        assertEquals("{\"event\":\"test\",\"payload\":\"Hello World\",\"player\":\"Someone\"}", GsonUtils.GSON.toJson(message));
     }
 
     @Test

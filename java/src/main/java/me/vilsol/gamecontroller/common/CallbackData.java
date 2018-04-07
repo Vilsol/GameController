@@ -1,16 +1,17 @@
 package me.vilsol.gamecontroller.common;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class CallbackData<A, B> {
 
     private final Consumer<A> singleConsumer;
-    private final DoubleConsumer<A, B> doubleConsumer;
+    private final BiConsumer<A, B> doubleConsumer;
 
     private final Class<A> aType;
     private final Class<B> bType;
 
-    public CallbackData(Consumer<A> singleConsumer, DoubleConsumer<A, B> doubleConsumer, Class<A> aType, Class<B> bType){
+    public CallbackData(Consumer<A> singleConsumer, BiConsumer<A, B> doubleConsumer, Class<A> aType, Class<B> bType){
         this.singleConsumer = singleConsumer;
         this.doubleConsumer = doubleConsumer;
         this.aType = aType;

@@ -1,10 +1,12 @@
 package me.vilsol.gamecontroller.common.messages;
 
+import me.vilsol.gamecontroller.common.BasePlayer;
+import me.vilsol.gamecontroller.common.GameController;
+
 import java.util.Objects;
 
-public class EventMessage extends Message {
+public class EventMessage extends PlayerMessage {
 
-    private String player;
     private String event;
     private String payload;
 
@@ -12,17 +14,9 @@ public class EventMessage extends Message {
     }
 
     public EventMessage(String player, String event, String payload){
-        this.player = player;
+        super(player);
         this.event = event;
         this.payload = payload;
-    }
-
-    public String getPlayer(){
-        return player;
-    }
-
-    public void setPlayer(String player){
-        this.player = player;
     }
 
     public String getEvent(){
@@ -43,7 +37,18 @@ public class EventMessage extends Message {
 
     @Override
     protected boolean validateStructure(){
-        return player != null && event != null;
+        return super.validateStructure() && event != null;
+    }
+
+    @Override
+    public void process(){
+        BasePlayer player = GameController.resolvePlayer(getPlayer());
+
+        if(player == null){
+            return;
+        }
+
+        player.processEvent(this);
     }
 
     @Override
@@ -56,15 +61,18 @@ public class EventMessage extends Message {
             return false;
         }
 
+        if(!super.equals(o)){
+            return false;
+        }
+
         EventMessage that = (EventMessage) o;
-        return Objects.equals(player, that.player) &&
-                Objects.equals(event, that.event) &&
+        return Objects.equals(event, that.event) &&
                 Objects.equals(payload, that.payload);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(player, event, payload);
+        return Objects.hash(super.hashCode(), event, payload);
     }
 
 }

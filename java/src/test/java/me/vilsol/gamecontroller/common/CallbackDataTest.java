@@ -3,6 +3,7 @@ package me.vilsol.gamecontroller.common;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,7 +16,7 @@ class CallbackDataTest {
         AtomicReference<Integer> returnInteger = new AtomicReference<>();
 
         Consumer<String> singleConsumer = returnString::set;
-        DoubleConsumer<String, Integer> doubleConsumer = (resultString, resultInteger) -> {
+        BiConsumer<String, Integer> doubleConsumer = (resultString, resultInteger) -> {
             returnString.set(resultString);
             returnInteger.set(resultInteger);
         };

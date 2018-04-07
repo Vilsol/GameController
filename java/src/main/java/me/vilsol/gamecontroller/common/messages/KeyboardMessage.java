@@ -1,21 +1,22 @@
 package me.vilsol.gamecontroller.common.messages;
 
+import me.vilsol.gamecontroller.common.BasePlayer;
+import me.vilsol.gamecontroller.common.GameController;
 import me.vilsol.gamecontroller.common.keys.KeyAction;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class KeyboardMessage extends Message {
+public class KeyboardMessage extends PlayerMessage {
 
-    private String player;
     private List<Action> actions;
 
     public KeyboardMessage(){
     }
 
     public KeyboardMessage(String player, List<Action> actions){
-        this.player = player;
+        super(player);
         this.actions = actions;
     }
 
@@ -27,27 +28,31 @@ public class KeyboardMessage extends Message {
         this.actions = actions;
     }
 
-    public String getPlayer(){
-        return player;
-    }
-
-    public void setPlayer(String player){
-        this.player = player;
-    }
-
     @Override
     protected boolean validateStructure(){
-        if(actions == null || player == null){
+        if(actions == null || !super.validateStructure()){
             return false;
         }
 
         for(Action action : actions){
             if(!action.validateStructure()){
+                System.out.println(2);
                 return false;
             }
         }
 
         return true;
+    }
+
+    @Override
+    public void process(){
+        BasePlayer player = GameController.resolvePlayer(getPlayer());
+
+        if(player == null){
+            return;
+        }
+
+        player.processKeyboard(this);
     }
 
     @Override
@@ -60,14 +65,17 @@ public class KeyboardMessage extends Message {
             return false;
         }
 
+        if(!super.equals(o)){
+            return false;
+        }
+
         KeyboardMessage that = (KeyboardMessage) o;
-        return Objects.equals(actions, that.actions) &&
-                Objects.equals(player, that.player);
+        return Objects.equals(actions, that.actions);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(actions, player);
+        return Objects.hash(super.hashCode(), actions);
     }
 
     public static class Action {

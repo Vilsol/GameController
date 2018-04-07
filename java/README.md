@@ -4,7 +4,7 @@
 
 ```java
 import me.vilsol.gamecontroller.server.Server;
-import me.vilsol.gamecontroller.server.core.Player;
+import me.vilsol.gamecontroller.server.core.ServerPlayer;
 import me.vilsol.gamecontroller.server.core.PlayerManager;
 
 import java.awt.event.KeyEvent;
@@ -42,7 +42,7 @@ Extended example [here](/java/examples/ServerExample.java)
 ## Client
 
 ```java
-import me.vilsol.gamecontroller.client.Player;
+import me.vilsol.gamecontroller.client.ClientPlayer;
 
 public class ClientExample {
 

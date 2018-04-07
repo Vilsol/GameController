@@ -1,10 +1,10 @@
-import me.vilsol.gamecontroller.client.Player;
+import me.vilsol.gamecontroller.client.ClientPlayer;
 import me.vilsol.gamecontroller.common.mouse.MousePositionType;
 
 public class ClientExample {
 
     public static void main(String[] args){
-        Player playerOne = new Player("playerOne", "ws://localhost:8080/socket");
+        ClientPlayer playerOne = new ClientPlayer("playerOne", "ws://localhost:8080/socket");
 
         playerOne.onPayload("ping", PingMessage.class, pingMessage -> {
             System.out.println("Received Ping: " + pingMessage.ping);

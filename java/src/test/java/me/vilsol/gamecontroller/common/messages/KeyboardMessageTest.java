@@ -60,7 +60,7 @@ class KeyboardMessageTest {
     void encode(){
         KeyboardMessage.Action action = new KeyboardMessage.Action(KeyAction.PRESSED, Collections.singletonList("enter"), "{\"something\": \"darkside\"}");
         KeyboardMessage message = new KeyboardMessage("Someone", Collections.singletonList(action));
-        assertEquals("{\"player\":\"Someone\",\"actions\":[{\"action\":\"PRESSED\",\"keys\":[\"enter\"],\"payload\":\"{\\\"something\\\": \\\"darkside\\\"}\"}]}", GsonUtils.GSON.toJson(message));
+        assertEquals("{\"actions\":[{\"action\":\"PRESSED\",\"keys\":[\"enter\"],\"payload\":\"{\\\"something\\\": \\\"darkside\\\"}\"}],\"player\":\"Someone\"}", GsonUtils.GSON.toJson(message));
     }
 
     @Test

@@ -1,7 +1,10 @@
 package me.vilsol.gamecontroller.server;
 
-import me.vilsol.gamecontroller.common.messages.*;
-import me.vilsol.gamecontroller.server.core.MessageProcessor;
+import me.vilsol.gamecontroller.common.BasePlayer;
+import me.vilsol.gamecontroller.common.GameController;
+import me.vilsol.gamecontroller.common.messages.Message;
+import me.vilsol.gamecontroller.common.messages.PlayerMessage;
+import me.vilsol.gamecontroller.server.core.ServerPlayer;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
@@ -13,16 +16,19 @@ public class WebsocketHandler {
     public void message(Session session, String data){
         Message message = Message.decode(data);
 
-        if(message instanceof KeyboardMessage){
-            MessageProcessor.processKeyboardMessage(session, (KeyboardMessage) message);
-        }else if(message instanceof MouseMessage){
-            MessageProcessor.processMouseMessage(session, (MouseMessage) message);
-        }else if(message instanceof PayloadMessage){
-            MessageProcessor.processPayloadMessage(session, (PayloadMessage) message);
-        }else if(message instanceof EventMessage){
-            MessageProcessor.processEventMessage(session, (EventMessage) message);
+        if(message == null){
+            return;
         }
 
+        if(message instanceof PlayerMessage){
+            BasePlayer player = GameController.resolvePlayer(((PlayerMessage) message).getPlayer());
+
+            if(player instanceof ServerPlayer){
+                ((ServerPlayer) player).setSession(session);
+            }
+        }
+
+        message.process();
     }
 
 }

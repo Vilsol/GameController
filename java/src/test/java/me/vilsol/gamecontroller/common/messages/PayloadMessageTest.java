@@ -46,7 +46,7 @@ class PayloadMessageTest {
     @Test
     void encode(){
         PayloadMessage message = new PayloadMessage("Someone", "Hello World", "test");
-        assertEquals("{\"player\":\"Someone\",\"payload\":\"Hello World\",\"payloadType\":\"test\"}", GsonUtils.GSON.toJson(message));
+        assertEquals("{\"payload\":\"Hello World\",\"payloadType\":\"test\",\"player\":\"Someone\"}", GsonUtils.GSON.toJson(message));
     }
 
     @Test

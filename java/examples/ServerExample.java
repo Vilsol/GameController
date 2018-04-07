@@ -1,6 +1,6 @@
 import me.vilsol.gamecontroller.common.messages.MouseMessage;
 import me.vilsol.gamecontroller.server.Server;
-import me.vilsol.gamecontroller.server.core.Player;
+import me.vilsol.gamecontroller.server.core.ServerPlayer;
 import me.vilsol.gamecontroller.server.core.PlayerManager;
 
 import java.awt.event.KeyEvent;
@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 public class ServerExample {
 
     public static void main(String[] args){
-        Player playerOne = PlayerManager.newPlayer("playerOne");
+        ServerPlayer playerOne = PlayerManager.newPlayer("playerOne");
 
         playerOne.onKey('a', keyAction -> System.out.println("a was: " + keyAction));
         playerOne.onKey('A', keyAction -> System.out.println("A was: " + keyAction));

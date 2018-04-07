@@ -66,7 +66,7 @@ class MouseMessageTest {
     void encode(){
         MouseMessage.Position position = new MouseMessage.Position(MousePositionType.ABSOLUTE, 1, 2);
         MouseMessage message = new MouseMessage("Someone", MouseAction.PRESSED, position, "{\"something\": \"darkside\"}");
-        assertEquals("{\"player\":\"Someone\",\"action\":\"PRESSED\",\"position\":{\"type\":\"ABSOLUTE\",\"x\":1,\"y\":2},\"payload\":\"{\\\"something\\\": \\\"darkside\\\"}\"}", GsonUtils.GSON.toJson(message));
+        assertEquals("{\"action\":\"PRESSED\",\"position\":{\"type\":\"ABSOLUTE\",\"x\":1,\"y\":2},\"payload\":\"{\\\"something\\\": \\\"darkside\\\"}\",\"player\":\"Someone\"}", GsonUtils.GSON.toJson(message));
     }
 
     @Test

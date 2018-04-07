@@ -1,13 +1,14 @@
 package me.vilsol.gamecontroller.common.messages;
 
+import me.vilsol.gamecontroller.common.BasePlayer;
+import me.vilsol.gamecontroller.common.GameController;
 import me.vilsol.gamecontroller.common.mouse.MouseAction;
 import me.vilsol.gamecontroller.common.mouse.MousePositionType;
 
 import java.util.Objects;
 
-public class MouseMessage extends Message {
+public class MouseMessage extends PlayerMessage {
 
-    private String player;
     private MouseAction action;
     private Position position;
     private String payload;
@@ -16,18 +17,10 @@ public class MouseMessage extends Message {
     }
 
     public MouseMessage(String player, MouseAction action, Position position, String payload){
-        this.player = player;
+        super(player);
         this.action = action;
         this.position = position;
         this.payload = payload;
-    }
-
-    public String getPlayer(){
-        return player;
-    }
-
-    public void setPlayer(String player){
-        this.player = player;
     }
 
     public MouseAction getAction(){
@@ -56,7 +49,18 @@ public class MouseMessage extends Message {
 
     @Override
     protected boolean validateStructure(){
-        return player != null && action != null && position != null && position.validateStructure();
+        return super.validateStructure() && action != null && position != null && position.validateStructure();
+    }
+
+    @Override
+    public void process(){
+        BasePlayer player = GameController.resolvePlayer(getPlayer());
+
+        if(player == null){
+            return;
+        }
+
+        player.processMouse(this);
     }
 
     @Override
@@ -69,16 +73,19 @@ public class MouseMessage extends Message {
             return false;
         }
 
+        if(!super.equals(o)){
+            return false;
+        }
+
         MouseMessage that = (MouseMessage) o;
-        return Objects.equals(player, that.player) &&
-                Objects.equals(action, that.action) &&
+        return action == that.action &&
                 Objects.equals(position, that.position) &&
                 Objects.equals(payload, that.payload);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(player, action, position, payload);
+        return Objects.hash(super.hashCode(), action, position, payload);
     }
 
     public static class Position {
